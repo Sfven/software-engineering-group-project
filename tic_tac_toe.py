@@ -34,7 +34,7 @@ class TicTacToeBoard(tk.Tk):
                     font=font.Font(size=36, weight="bold"),
                     fg="black",
                     width=3,
-                    height=2,
+                    height=1,
                     highlightbackground="lightblue",
                 )
                 self._cells[button] = (row, col)
