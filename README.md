@@ -1,6 +1,6 @@
 # Project Idea
 
-## GamerGirlCentral
+## Gamer Central
 
 Easy game like tic tac toe
 
