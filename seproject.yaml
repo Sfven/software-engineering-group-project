@@ -1,0 +1,31 @@
+version: "1"
+services:
+  mysql:
+    environment:
+      - MYSQL_DATABASE=seproject_mysql
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_TCP_PORT=9000
+      - MYSQL_UNIX_PORT=9000
+    image: docker.io/library/mysql:latest
+    networks:
+      default:
+        aliases:
+          - mysql
+    restart: always
+    ports:
+      - 9000:9000
+    volumes:
+      - /docker/seproject/mysql:/var/lib/mysql
+  python:
+    image: docker.io/library/python:3.12-alpine
+    restart: always
+    working_dir: /home/python/
+    ports:
+      - 9001:9001
+    command: >
+      sh -c "
+        apk add git tk &&
+        git clone https://github.com/Sfven/software-engineering-group-project.git /home/python/ &&
+        echo "sleeping..." &&
+        sleep 3600
+      "
