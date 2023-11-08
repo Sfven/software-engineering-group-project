@@ -96,7 +96,7 @@ class TicTacToeGame:
 class TicTacToeBoard(tk.Tk):
     def __init__(self, game):
         super().__init__()
-        self.title("Tic-Tac-Toe - GamerGirlCentral")
+        self.title("Tic-Tac-Toe")
         self._cells = {}
         self._game = game
         self._create_board_display()
