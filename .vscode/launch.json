@@ -4,8 +4,15 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
 
+        {
+            "type": "java",
+            "name": "gamehub",
+            "request": "launch",
+            "mainClass": "gamehub",
+            "projectName": "software-engineering-group-project_c3e2d212",
+            "vmArgs": "--module-path=C:/Users/bjone/Downloads/openjfx-19_windows-x64_bin-sdk/javafx-sdk-19/lib --add-modules javafx.controls,javafx.fxml"
+        },
         {
             "type": "java",
             "name": "Current File",
@@ -19,7 +26,6 @@
             "mainClass": "wordle",
             "projectName": "software-engineering-group-project_c3e2d212",
             "vmArgs": "--module-path=C:/Users/bjone/Downloads/openjfx-19_windows-x64_bin-sdk/javafx-sdk-19/lib --add-modules javafx.controls,javafx.fxml"
-
         }
     ]
 }

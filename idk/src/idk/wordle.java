@@ -1,5 +1,4 @@
 
-
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.io.BufferedReader;
@@ -56,9 +55,11 @@ public class wordle extends Application {
 	boolean win = false;
 	boolean over = false;
 	
+	/* 
 	public static void main(String[] args) throws IOException {
 		launch(args);
 	}
+	*/
 
 	@Override
 	public void start(Stage stage) throws Exception {
