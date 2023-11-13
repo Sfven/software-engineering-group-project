@@ -4,8 +4,6 @@ services:
     environment:
       - MYSQL_DATABASE=seproject_mysql
       - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_TCP_PORT=10888
-      - MYSQL_UNIX_PORT=10888
     image: docker.io/library/mysql:latest
     networks:
       default:
@@ -13,7 +11,7 @@ services:
           - mysql
     restart: always
     ports:
-      - 10888:10888
+      - 10888:3306
     volumes:
       - /docker/seproject/mysql:/var/lib/mysql
 
