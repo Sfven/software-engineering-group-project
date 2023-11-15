@@ -2,8 +2,10 @@ version: "1"
 services:
   mysql:
     environment:
-      - MYSQL_DATABASE=seproject_mysql
+      - MYSQL_DATABASE=users
       - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_USER=$DB_USER
+      - MYSQL_PASSWORD=$DB_PASSWORD
     image: docker.io/library/mysql:latest
     networks:
       default:
@@ -14,4 +16,3 @@ services:
       - 10888:3306
     volumes:
       - /docker/seproject/mysql:/var/lib/mysql
-
