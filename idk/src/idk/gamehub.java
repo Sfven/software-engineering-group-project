@@ -41,12 +41,12 @@ import javafx.stage.Stage;
 
 public class gamehub extends Application {
 
-    String username = "testUser";
+    String username = "blainos";
 
     double gameSquareSize = 150;
     double profRectWidth = 250;
     double profRectHeight = 75;
-    double playButtonWidth = 250;
+    double playButtonWidth = 200;
     double playButtonHeight = 25;
     double profPicSize = 25;
     Font gameSquareFont = new Font("Arial Bold", 24);
@@ -150,6 +150,23 @@ public class gamehub extends Application {
                 StackPane playButtonStack = new StackPane();
                 playButtonStack.getChildren().addAll(playRectangle, playText);
 
+                EventHandler<MouseEvent> wordlePlayButtonClick = new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        System.out.println("Play button clicked");
+                        Stage wordleStage = new Stage();
+                        wordle wordle = new wordle();
+                        try {
+                            wordle.start(wordleStage);
+                        }
+                        catch (Exception e) {
+                            System.out.println("error!");
+                        }
+                    }
+                };
+
+                playButtonStack.setOnMouseClicked(wordlePlayButtonClick);
+
                 wordlePane.add(playButtonStack, 0, 0);
 
                 GridPane statGrid = new GridPane();
@@ -167,7 +184,7 @@ public class gamehub extends Application {
 
                 String totalWins = "Total Wins: ";
                 String totalLosses = "Total Losses: ";
-                String averageGuesses = "Average Guesses per Game: ";
+                String averageGuesses = "Average Guesses: ";
                 String bestGuess = "Lowest Guess: ";
 
                 Text winText = new Text(totalWins);
@@ -204,9 +221,6 @@ public class gamehub extends Application {
         };
         wordleStack.setOnMouseClicked(wordleClick);
 
-
-
-
         EventHandler<MouseEvent> tictacClick = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -225,6 +239,30 @@ public class gamehub extends Application {
 
                 StackPane playButtonStack = new StackPane();
                 playButtonStack.getChildren().addAll(playRectangle, playText);
+
+                EventHandler<MouseEvent> tictacPlayButtonClick = new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        System.out.println("Play button clicked");
+
+                        String command = "python idk\\tic_tac_toe.py";
+                        try {
+                            Process p = Runtime.getRuntime().exec(command);
+                            p.waitFor();
+                            p.destroy();
+                        }
+                        catch (IOException e) {
+                            System.out.println("python executing error (IO Exception)");
+                        }
+                        catch (InterruptedException e) {
+                            System.out.println("interrupted exception");
+                        }
+                        System.out.println("Is tic tac toe running?");
+
+                    }
+                };
+
+                playButtonStack.setOnMouseClicked(tictacPlayButtonClick);
 
                 tictacPane.add(playButtonStack, 0, 0);
 
