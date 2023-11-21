@@ -51,6 +51,15 @@ public class Login extends Application {
 
             if (validateLogin(username, password)) {
                 showAlert("Login Successful", "Welcome, " + username + "!");
+                primaryStage.hide();
+                gamehub gamehub = new gamehub();
+                Stage gamehubStage = new Stage();
+                try {
+                gamehub.start(gamehubStage);
+                }
+                catch (Exception exc) {
+                    System.out.println("error!");
+                }
             } else {
                 showAlert("Login Failed", "Invalid username or password.");
             }
