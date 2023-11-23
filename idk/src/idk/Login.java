@@ -82,18 +82,28 @@ public class Login extends Application {
     }
 
     private boolean validateLogin(String username, String password) {
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            String query = "SELECT * FROM users WHERE username = ? AND password = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, username);
-                preparedStatement.setString(2, password);
-
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    return resultSet.next(); // if user found, true
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(DB_URL,DB_USER,DB_PASSWORD);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM users")
+            while(resultSet.next()){
+                String uName = resultSet.getString("username");
+                String pWord = resultSet.getString("password");
+                if((uName == username) && (pWord == password)){
+                    statement.close();
+                    return true;
                 }
+
+                statement.close();
+                return false;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            
+        }
+        catch (Exception e){
+
+            
+            System.out.println(e);
             return false;
         }
     }
