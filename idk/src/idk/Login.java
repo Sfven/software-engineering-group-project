@@ -92,8 +92,6 @@ public class Login extends Application {
     
     private boolean validateLogin(String username, String password) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(DB_URL,DB_USER,DB_PASSWORD);
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM users")
             while(resultSet.next()){
