@@ -19,7 +19,7 @@ public class Login extends Application {
     private static final String DB_URL = "jdbc:mysql://166.113.71.13:10888/users";
     private static final String DB_USER = "app";
     private static final String DB_PASSWORD = "&*Mgw41#7evRnVym6CKmmc2jHoYG0*FX"; // this is a password. dont share it with bad people or they can jack with the database ¯\_(ツ)_/¯
-
+    private Connection connection;
     public static void main(String[] args) {
         launch(args);
     }
@@ -81,6 +81,15 @@ public class Login extends Application {
         primaryStage.show();
     }
 
+    void createConnection(){
+        try{
+            class.forName("com.mysql.cj.jdbc.Driver");
+             this.connection = DriverManager.getConnection(DB_URL,DB_USER,DB_PASSWORD);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
+    
     private boolean validateLogin(String username, String password) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -109,7 +118,7 @@ public class Login extends Application {
     }
 
     private boolean registerUser(String username, String password) {
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+        try{
             String query = "INSERT INTO users (username, password) VALUES (?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, username);
