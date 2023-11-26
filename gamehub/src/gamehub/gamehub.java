@@ -160,7 +160,7 @@ public class gamehub extends Application {
                             wordle.start(wordleStage);
                         }
                         catch (Exception e) {
-                            System.out.println("error!");
+                            e.printStackTrace();
                         }
                     }
                 };
@@ -245,7 +245,7 @@ public class gamehub extends Application {
                     public void handle(MouseEvent event) {
                         System.out.println("Play button clicked");
 
-                        String command = "python idk\\tic_tac_toe.py";
+                        String command = "python ..\\..\\tic_tac_toe.py";
                         try {
                             Process p = Runtime.getRuntime().exec(command);
                             p.waitFor();
