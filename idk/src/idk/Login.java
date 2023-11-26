@@ -13,10 +13,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Login extends Application {
 
-    private static final String DB_URL = "jdbc:mysql://166.113.71.13:10888/users";
+    private static final String DB_URL = "jdbc:mysql://seprojectdb.sfven.xyz:10888/users";
     private static final String DB_USER = "app";
     private static final String DB_PASSWORD = "&*Mgw41#7evRnVym6CKmmc2jHoYG0*FX"; // this is a password. dont share it with bad people or they can jack with the database ¯\_(ツ)_/¯
     private Connection connection;
