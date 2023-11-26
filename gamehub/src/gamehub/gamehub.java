@@ -245,7 +245,7 @@ public class gamehub extends Application {
                     public void handle(MouseEvent event) {
                         System.out.println("Play button clicked");
 
-                        String command = "python ..\\..\\tic_tac_toe.py";
+                        String command = "python ../../tic_tac_toe.py";
                         try {
                             Process p = Runtime.getRuntime().exec(command);
                             p.waitFor();
