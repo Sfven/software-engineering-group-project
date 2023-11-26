@@ -46,7 +46,14 @@ public class Login extends Application {
             String password = passwordField.getText();
 
             if (validateLogin(username, password)) {
-                showAlert("Login Successful", "Welcome, " + username + "!");
+                Stage gamehubStage = new Stage();
+                gamehub gamehub = new gamehub();
+                try {
+                    gamehub.start(gamehubStage);
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             } else {
                 showAlert("Login Failed", "Invalid username or password.");
             }
@@ -57,7 +64,14 @@ public class Login extends Application {
             String password = passwordField.getText();
 
             if (registerUser(username, password)) {
-                showAlert("Registration Successful", "Account created for " + username + ".");
+                Stage gamehubStage = new Stage();
+                gamehub gamehub = new gamehub();
+                try {
+                    gamehub.start(gamehubStage);
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             } else {
                 showAlert("Registration Failed", "Username already exists.");
             }
