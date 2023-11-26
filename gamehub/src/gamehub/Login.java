@@ -22,7 +22,7 @@ public class Login extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Login App");
+        primaryStage.setTitle("Login");
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -87,7 +87,7 @@ public class Login extends Application {
 
     private boolean registerUser(String username, String password) {
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            String query = "INSERT INTO users (username, password) VALUES (?, ?)";
+            String query = "INSERT INTO users (username, password, wordle_wins, wordle_losses, wordle_attempt, tictactoe_wins, tictactoe_losses, tictactoe_ties) VALUES (?, ?, 0, 0, NULL, 0, 0, 0)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, username);
                 preparedStatement.setString(2, password);
