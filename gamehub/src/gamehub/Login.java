@@ -76,15 +76,6 @@ public class Login extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-    void createConnection(){
-        try{
-            class.forName("com.mysql.cj.jdbc.Driver");
-             this.connection = DriverManager.getConnection(DB_URL,DB_USER,DB_PASSWORD);
-        }catch (Exception e){
-            System.out.println(e);
-        }
-    }
     
     private boolean validateLogin(String username, String password) {
         try {
@@ -109,7 +100,7 @@ public class Login extends Application {
 
     private boolean registerUser(String username, String password) {
         try{
-            String query = "INSERT INTO users (username, password) VALUES (?, ?)";
+            String query = "INSERT INTO users (username, password, wordle_wins, wordle_losses, wordle_attempt. tictactoe_wins, tictactoe_losses, tictactoe_ties) VALUES (?, ?, 0 , 0, NULL, 0, 0, 0)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, username);
                 preparedStatement.setString(2, password);
