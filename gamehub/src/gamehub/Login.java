@@ -1,8 +1,3 @@
-/*
-javac --module-path ./javafx-sdk-21.0.1/lib/ --add-modules javafx.controls,javafx.fxml Login.java
-java --module-path ./javafx-sdk-21.0.1/lib/ --add-modules javafx.controls,javafx.fxml Login.java
-*/
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -102,15 +97,11 @@ public class Login extends Application {
                     statement.close();
                     return true;
                 }
-
                 statement.close();
                 return false;
             }
-            
         }
         catch (Exception e){
-
-            
             System.out.println(e);
             return false;
         }
