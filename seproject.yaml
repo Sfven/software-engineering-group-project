@@ -6,6 +6,7 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_USER=$DB_USER
       - MYSQL_PASSWORD=$DB_PASSWORD
+      - MYSQL_ROOT_HOST="%"
     image: docker.io/library/mysql:latest
     networks:
       default:
@@ -14,5 +15,18 @@ services:
     restart: always
     ports:
       - 10888:3306
+    volumes:
+      - /docker/seproject/mysql:/var/lib/mysql
+  phpmyadmin:
+    environment:
+      - PMA_ARBITRARY=1
+    image: docker.io/library/phpmyadmin:latest
+    networks:
+      default:
+        aliases:
+          - phpmyadmin
+    restart: always
+    ports:
+      - 10889:80
     volumes:
       - /docker/seproject/mysql:/var/lib/mysql
