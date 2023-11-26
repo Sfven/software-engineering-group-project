@@ -75,7 +75,7 @@ public class Login extends Application {
                     ex.printStackTrace();
                 }
             } else {
-                showAlert("Registration Failed", "Username already exists.");
+                showAlert("Registration Failed", "Username already exists or provided username/password are invalid.");
             }
         });
 
@@ -118,6 +118,10 @@ public class Login extends Application {
     private boolean registerUser(String username, String password) {
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
             if (usernameExists(username)) {
+                return false;
+            }
+            if (username.length() > 65 || password.length() > 65) {
+                showAlert("Invalid username/password", "Username/password cannot exceed 65 characters.");
                 return false;
             }
             String query = "INSERT INTO users (username, password, wordle_wins, wordle_losses, wordle_attempt, tictactoe_wins, tictactoe_losses, tictactoe_ties) VALUES (?, ?, 0, 0, NULL, 0, 0, 0)";
