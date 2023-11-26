@@ -157,6 +157,7 @@ public class gamehub extends Application {
                         Stage wordleStage = new Stage();
                         wordle wordle = new wordle();
                         try {
+                            stage.close();
                             wordle.start(wordleStage);
                         }
                         catch (Exception e) {
@@ -250,6 +251,7 @@ public class gamehub extends Application {
                             Process p = Runtime.getRuntime().exec(command);
                             p.waitFor();
                             p.destroy();
+                            stage.close();
                         }
                         catch (IOException e) {
                             System.out.println("python executing error (IO Exception)");
