@@ -21,8 +21,8 @@ public class Login extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Login");
+    public void start(Stage loginStage) {
+        loginStage.setTitle("Login");
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -78,8 +78,8 @@ public class Login extends Application {
         });
 
         Scene scene = new Scene(grid, 300, 200);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        loginStage.setScene(scene);
+        loginStage.show();
     }
 
     private boolean validateLogin(String username, String password) {
