@@ -69,8 +69,8 @@ public class wordle extends Application {
 		 */
 		ArrayList<String> wordleList = new ArrayList<>(); // List for Wordle Word of the Day
 		ArrayList<String> extendedList = new ArrayList<>(); // List for eligible words to be guessed
-		BufferedReader reader1 = new BufferedReader(new FileReader("idk\\english_words_10k_mit.txt"));
-		BufferedReader reader2 = new BufferedReader(new FileReader("idk\\english_words_alpha_dwyl.txt"));
+		BufferedReader reader1 = new BufferedReader(new FileReader("../../english_words_10k_mit.txt"));
+		BufferedReader reader2 = new BufferedReader(new FileReader("../../english_words_alpha_dwyl.txt"));
 		while (reader1.ready()) {
 			String word = reader1.readLine();
 			if (word.length() == 5) {
