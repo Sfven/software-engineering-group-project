@@ -49,6 +49,7 @@ public class Login extends Application {
                 Stage gamehubStage = new Stage();
                 gamehub gamehub = new gamehub();
                 try {
+                    loginStage.close();
                     gamehub.start(gamehubStage);
                 }
                 catch (Exception ex) {
@@ -67,6 +68,7 @@ public class Login extends Application {
                 Stage gamehubStage = new Stage();
                 gamehub gamehub = new gamehub();
                 try {
+                    loginStage.close();
                     gamehub.start(gamehubStage);
                 }
                 catch (Exception ex) {
