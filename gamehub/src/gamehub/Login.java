@@ -15,7 +15,7 @@ public class Login extends Application {
     private static final String DB_URL = "jdbc:mysql://seprojectdb.sfven.xyz:10888/users";
     private static final String DB_USER = "app";
     private static final String DB_PASSWORD = "&*Mgw41#7evRnVym6CKmmc2jHoYG0*FX"; // this is a password. dont share it with bad people or they can jack with the database ¯\_(ツ)_/¯
-    private Connection connection;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -47,15 +47,6 @@ public class Login extends Application {
 
             if (validateLogin(username, password)) {
                 showAlert("Login Successful", "Welcome, " + username + "!");
-                primaryStage.hide();
-                gamehub gamehub = new gamehub();
-                Stage gamehubStage = new Stage();
-                try {
-                gamehub.start(gamehubStage);
-                }
-                catch (Exception exc) {
-                    System.out.println("error!");
-                }
             } else {
                 showAlert("Login Failed", "Invalid username or password.");
             }
@@ -76,31 +67,27 @@ public class Login extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-    
+
     private boolean validateLogin(String username, String password) {
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM users")
-            while(resultSet.next()){
-                String uName = resultSet.getString("username");
-                String pWord = resultSet.getString("password");
-                if((uName == username) && (pWord == password)){
-                    statement.close();
-                    return true;
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    return resultSet.next(); // if user found, true
                 }
-                statement.close();
-                return false;
             }
-        }
-        catch (Exception e){
-            System.out.println(e);
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
 
     private boolean registerUser(String username, String password) {
-        try{
-            String query = "INSERT INTO users (username, password, wordle_wins, wordle_losses, wordle_attempt. tictactoe_wins, tictactoe_losses, tictactoe_ties) VALUES (?, ?, 0 , 0, NULL, 0, 0, 0)";
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            String query = "INSERT INTO users (username, password) VALUES (?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, username);
                 preparedStatement.setString(2, password);
