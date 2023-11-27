@@ -6,9 +6,12 @@
 //import java.io.FileNotFoundException;
 //import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 //import java.lang.reflect.Method;
 //import java.util.ArrayList;
 //import java.util.Random;
+import java.sql.PreparedStatement;
 
 import javafx.application.Application;
 //import javafx.beans.value.ChangeListener;
@@ -41,14 +44,19 @@ import javafx.stage.Stage;
 
 public class gamehub extends Application {
 
+    private static final String DB_URL = "jdbc:mysql://seprojectdb.sfven.xyz:10888/users";
+    private static final String DB_USER = "app";
+    private static final String DB_PASSWORD = "&*Mgw41#7evRnVym6CKmmc2jHoYG0*FX"; // this is a password. dont share it with bad people or they can jack with the database ¯\_(ツ)_/¯
+
     private String username;
     private String password;
     private int wordleWins;
     private int wordleLosses;
     private String wordleAttempts;
-    private int tictacWins;
+    private int tictacWins = 0;
     private int tictacLosses;
     private int tictacTies;
+    gamehub hub;
 
     double gameSquareSize = 150;
     double profRectWidth = 250;
@@ -81,6 +89,7 @@ public class gamehub extends Application {
         tictacWins = 0;
         tictacLosses = 0;
         tictacTies = 0;
+        hub = this;
     }
 	
 	public gamehub(String uName, String uPass, int wWins, int wLoss, String wAtmt, int tWins, int tLoss, int tTies) {
@@ -93,6 +102,7 @@ public class gamehub extends Application {
         tictacWins = tWins;
         tictacLosses = tLoss;
         tictacTies = tTies;
+        hub = this;
     }
 
 	@Override
@@ -185,9 +195,9 @@ public class gamehub extends Application {
                     public void handle(MouseEvent event) {
                         //System.out.println("Play button clicked");
                         Stage wordleStage = new Stage();
-                        wordle wordle = new wordle(username, password);
+                        wordle wordle = new wordle(username, password, hub);
                         try {
-                            stage.close();
+                            //stage.close();
                             wordle.start(wordleStage);
                         }
                         catch (Exception e) {
@@ -212,20 +222,23 @@ public class gamehub extends Application {
                 //int wordleLosses = 0;
                 double wordleAverage = 0.0;
                 int lowest = 6;
+                if (wordleAttempts == "") {
+                    wordleAttempts = null;
+                }
                 if (wordleAttempts != null) {
                     String[] strArray = wordleAttempts.split(",");
                     int[] wordleHistory = new int[strArray.length];
-                for(int i = 0; i < strArray.length; i++) {
+                    for(int i = 0; i < strArray.length; i++) {
                     wordleHistory[i] = Integer.parseInt(strArray[i]);
-                }
-                int totalAttempts = 0;
-                for (int i = 0; i < wordleHistory.length; i++) {
-                    totalAttempts = totalAttempts + wordleHistory[i];
-                    if (wordleHistory[i] < totalAttempts) {
-                        lowest = wordleHistory[i];
                     }
-                }
-                wordleAverage = totalAttempts / wordleHistory.length;
+                    int totalAttempts = 0;
+                    for (int i = 0; i < wordleHistory.length; i++) {
+                        totalAttempts = totalAttempts + wordleHistory[i];
+                        if (wordleHistory[i] < totalAttempts) {
+                            lowest = wordleHistory[i];
+                        }
+                    }
+                    wordleAverage = totalAttempts / wordleHistory.length;
                 }
                 int wordlePersonalBest = lowest;
 
@@ -297,7 +310,7 @@ public class gamehub extends Application {
                             Process p = Runtime.getRuntime().exec(command);
                             p.waitFor();
                             p.destroy();
-                            stage.close();
+                            //stage.close();
                         }
                         catch (IOException e) {
                             System.out.println("python executing error (IO Exception)");
@@ -374,5 +387,47 @@ public class gamehub extends Application {
 		stage.setScene(scene);
 		stage.setTitle("GameHub");
 		stage.show();
+    }
+
+    public void addWordleWin(int attemptCount) {
+        wordleWins++;
+        if (wordleAttempts == null) wordleAttempts = "";
+        wordleAttempts.concat(attemptCount + ",");
+        updateStats();
+    }
+
+    public void addWordleLoss(int attemptCount) {
+        wordleLosses++;
+        if (wordleAttempts == null) wordleAttempts = "";
+        wordleAttempts.concat(attemptCount + ",");
+        updateStats();
+    }
+
+    public void updateStats() {
+        String query = "UPDATE users SET username=?,password=?,wordle_wins=?,wordle_losses=?,wordle_attempt=?,tictactoe_wins=?,tictactoe_losses=?,tictactoe_ties=? WHERE username = ?";
+        Connection connection;
+        try {
+        connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(9, username);
+                preparedStatement.setString(2, password);
+                preparedStatement.setInt(3, wordleWins);
+                preparedStatement.setInt(4, wordleLosses);
+                preparedStatement.setString(5, wordleAttempts);
+                preparedStatement.setInt(6, tictacWins);
+                preparedStatement.setInt(7, tictacLosses);
+                preparedStatement.setInt(8, tictacTies);
+                //...etc
+                preparedStatement.executeUpdate();
+                //return true;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

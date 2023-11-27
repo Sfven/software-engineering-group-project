@@ -62,6 +62,7 @@ public class wordle extends Application {
 
 	private String username;
 	private String password;
+	gamehub hub;
 
 
 	private static final String DB_URL = "jdbc:mysql://seprojectdb.sfven.xyz:10888/users";
@@ -74,10 +75,11 @@ public class wordle extends Application {
 	}
 	*/
 
-	public wordle(String username, String password) {
+	public wordle(String username, String password, gamehub hub) {
 		super();
 		this.username = username;
 		this.password = password;
+		this.hub = hub;
 	}
 
 	@Override
@@ -112,7 +114,7 @@ public class wordle extends Application {
 		WotD = wordleList.get(rand.nextInt(wordleList.size()));
 		
 		//CHEAT
-		//System.out.println(WotD);
+		System.out.println(WotD);
 		
 		/*
 		 * Build GUI.
@@ -437,12 +439,12 @@ public class wordle extends Application {
 			        				if (guess.equals(WotD)) {
 			        					over = true;
 			        					win = true;
-			        					endGame(wordleGrid, textGrid, win, WotD, attempts, username, password);
+			        					endGame(wordleGrid, textGrid, win, WotD, attempts, hub);
 			        				}
 			        				else if (((TextField) ((Pane) wordleGrid.getChildren().get(29)).getChildren().get(1)).isFocused()) {
 			        					over = true;
 			        					win = false;
-			        					endGame(wordleGrid, textGrid, win, WotD, attempts, username, password);
+			        					endGame(wordleGrid, textGrid, win, WotD, attempts, hub);
 			        				}
 
 			        			}
@@ -533,7 +535,7 @@ public class wordle extends Application {
 	 * set all tiles as uneditable 
 	 * and change header to appropriate message.
 	 */
-	public static void endGame(GridPane wordleGrid, GridPane textGrid, boolean win, String WotD, int attempts, String username, String password) {
+	public static void endGame(GridPane wordleGrid, GridPane textGrid, boolean win, String WotD, int attempts, gamehub hub) {
 		for (Node box : wordleGrid.getChildren()) {
 			((TextField) ((Pane) box).getChildren().get(1)).setEditable(false);
 			((TextField) ((Pane) box).getChildren().get(1)).setFocusTraversable(false);
@@ -542,53 +544,13 @@ public class wordle extends Application {
 		if (win) {
 			System.out.println("You win!");
 			((Text) ((Pane) textGrid).getChildren().get(0)).setText("YOU WIN!");
-			try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            String query = "SELECT * FROM users WHERE username = ? AND password = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, username);
-                preparedStatement.setString(2, password);
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    resultSet.next();
-					int wins = resultSet.getInt("wordle_wins");
-					wins++;
-                    resultSet.updateInt("wordle_wins", wins);
-					resultSet.updateRow();
-					String attemptString = resultSet.getString("wordle_attempt");
-					if (attemptString == null) attemptString = "";
-					attemptString.concat(attempts + ",");
-                    //return true;
-                }
-            }
-			} catch (Exception e) {
-				e.printStackTrace();
-				//return false;
-			}
+			hub.addWordleWin(attempts);
 			
 		}
 		else {
 			System.out.println("You lose!");
 			((Text) ((Pane) textGrid).getChildren().get(0)).setText("YOU LOSE: " + WotD.toUpperCase());
-			try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            String query = "SELECT * FROM users WHERE username = ? AND password = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, username);
-                preparedStatement.setString(2, password);
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    resultSet.next();
-					int losses = resultSet.getInt("wordle_losses");
-					losses++;
-                    resultSet.updateInt("wordle_losses", losses);
-					resultSet.updateRow();
-					String attemptString = resultSet.getString("wordle_attempt");
-					if (attemptString == null) attemptString = "";
-					attemptString.concat(attempts + ",");
-                    //return true;
-                }
-            }
-			} catch (Exception e) {
-				e.printStackTrace();
-				//return false;
-			}
+			hub.addWordleLoss(attempts);
 		}
 	}
 
