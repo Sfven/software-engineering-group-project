@@ -355,6 +355,7 @@ public class wordle extends Application {
 			        			// proceed if valid guess
 			        			else {
 									attempts++;
+									System.out.println(attempts);
 			        				/*
 			        				 * Loop through and change to pertinent color (grey, yellow, green)
 			        				 * Add to pertinent letter lists (grey, yellow, green)

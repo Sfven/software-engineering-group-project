@@ -171,12 +171,23 @@ public class gamehub extends Application {
         GridPane wordlePane = new GridPane();
         GridPane tictacPane = new GridPane();
 
+        Text winText = new Text();
+        Text winValue = new Text();
+        Text lossText = new Text();
+        Text lossValue = new Text();
+        Text averageText = new Text();
+        Text averageValue = new Text();
+        Text bestText = new Text();
+        Text bestValue = new Text();
+
         EventHandler<MouseEvent> wordleClick = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
 
                 profileGrid.getChildren().remove(tictacPane);
                 profileGrid.getChildren().remove(wordlePane);
+                tictacPane.getChildren().removeAll();
+                wordlePane.getChildren().removeAll(winText, winValue, lossText, lossValue, averageText, averageValue, bestText, bestValue);
 
                 wordlePane.setPadding(new Insets(10, 10, 10, 10));
                 wordlePane.setHgap(10);
@@ -234,11 +245,11 @@ public class gamehub extends Application {
                     int totalAttempts = 0;
                     for (int i = 0; i < wordleHistory.length; i++) {
                         totalAttempts = totalAttempts + wordleHistory[i];
-                        if (wordleHistory[i] < totalAttempts) {
+                        if (wordleHistory[i] < lowest) {
                             lowest = wordleHistory[i];
                         }
                     }
-                    wordleAverage = totalAttempts / wordleHistory.length;
+                    wordleAverage = totalAttempts / (wordleWins+wordleLosses);
                 }
                 int wordlePersonalBest = lowest;
 
@@ -247,22 +258,22 @@ public class gamehub extends Application {
                 String averageGuesses = "Average Guesses: ";
                 String bestGuess = "Lowest Guess: ";
 
-                Text winText = new Text(totalWins);
+                winText.setText(totalWins);
                 winText.setFont(statFont);
-                Text lossText = new Text(totalLosses);
+                lossText.setText(totalLosses);
                 lossText.setFont(statFont);
-                Text averageText = new Text(averageGuesses);
+                averageText.setText(averageGuesses);
                 averageText.setFont(statFont);
-                Text bestText = new Text(bestGuess);
+                bestText.setText(bestGuess);
                 bestText.setFont(statFont);
 
-                Text winValue = new Text(""+ wordleWins);
+                winValue.setText(""+ wordleWins);
                 winValue.setFont(statFont);
-                Text lossValue = new Text(""+ wordleLosses);
+                lossValue.setText(""+ wordleLosses);
                 lossValue.setFont(statFont);
-                Text averageValue = new Text(""+ wordleAverage);
+                averageValue.setText(""+ wordleAverage);
                 averageValue.setFont(statFont);
-                Text bestValue = new Text(""+ wordlePersonalBest);
+                bestValue.setText(""+ wordlePersonalBest);
                 bestValue.setFont(statFont);
 
                 statGrid.add(winText, 0, 0);
@@ -392,14 +403,20 @@ public class gamehub extends Application {
     public void addWordleWin(int attemptCount) {
         wordleWins++;
         if (wordleAttempts == null) wordleAttempts = "";
-        wordleAttempts.concat(attemptCount + ",");
+        String wordleAttemptsConcat = wordleAttempts + attemptCount + ",";
+        wordleAttempts = wordleAttemptsConcat;
+        //System.out.println(attemptCount + "//");
+        //System.out.println(wordleAttempts);
         updateStats();
     }
 
     public void addWordleLoss(int attemptCount) {
         wordleLosses++;
         if (wordleAttempts == null) wordleAttempts = "";
-        wordleAttempts.concat(attemptCount + ",");
+        String wordleAttemptsConcat = wordleAttempts + attemptCount + ",";
+        wordleAttempts = wordleAttemptsConcat;
+        //System.out.println(attemptCount + "//");
+        //System.out.println(wordleAttempts);
         updateStats();
     }
 
