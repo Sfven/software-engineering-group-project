@@ -9,9 +9,22 @@
             "name": "Login",
             "request": "launch",
             "mainClass": "Login",
+            "projectName": ""
+        },
+        {
+            "type": "java",
+            "name": "gamehub",
+            "request": "launch",
+            "mainClass": "gamehub",
+            "projectName": ""
+        },
+        {
+            "type": "java",
+            "name": "Login",
+            "request": "launch",
+            "mainClass": "Login",
             "projectName": "software-engineering-group-project_c3e2d212",
             "vmArgs": "--module-path=C:/Users/bjone/Downloads/openjfx-21.0.1_windows-x64_bin-sdk/javafx-sdk-21.0.1/lib --add-modules javafx.controls,javafx.fxml"
-
         },
         {
             "type": "java",
