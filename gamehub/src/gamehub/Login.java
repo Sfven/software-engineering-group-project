@@ -15,6 +15,13 @@ public class Login extends Application {
     private static final String DB_URL = "jdbc:mysql://seprojectdb.sfven.xyz:10888/users";
     private static final String DB_USER = "app";
     private static final String DB_PASSWORD = "&*Mgw41#7evRnVym6CKmmc2jHoYG0*FX"; // this is a password. dont share it with bad people or they can jack with the database ¯\_(ツ)_/¯
+    private String uName;
+    private int wWins;
+    private int wLoss;
+    private String wAtmt;
+    private int tWins;
+    private int tLoss;
+    private int tTies;
 
     public static void main(String[] args) {
         launch(args);
@@ -47,7 +54,7 @@ public class Login extends Application {
 
             if (validateLogin(username, password)) {
                 Stage gamehubStage = new Stage();
-                gamehub gamehub = new gamehub();
+                gamehub gamehub = new gamehub(uName, wWins, wLoss, wAtmt, tWins, tLoss, tTies);
                 try {
                     loginStage.close();
                     gamehub.start(gamehubStage);
@@ -91,7 +98,15 @@ public class Login extends Application {
                 preparedStatement.setString(1, username);
                 preparedStatement.setString(2, password);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    return resultSet.next(); // if user found, true
+                    resultSet.next();
+                    uName = resultSet.getString("username");
+                    wWins = resultSet.getInt("wordle_wins");
+                    wLoss = resultSet.getInt("wordle_losses");
+                    wAtmt = resultSet.getString("wordle_attempt");
+                    tWins = resultSet.getInt("tictactoe_wins");
+                    tLoss = resultSet.getInt("tictactoe_losses");
+                    tTies = resultSet.getInt("tictactoe_ties");
+                    return true;
                 }
             }
         } catch (Exception e) {
