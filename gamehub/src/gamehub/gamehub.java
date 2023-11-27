@@ -1,47 +1,53 @@
 
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+//import java.awt.AWTException;
+//import java.awt.Robot;
+//import java.io.BufferedReader;
+//import java.io.FileNotFoundException;
+//import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Random;
+//import java.lang.reflect.Method;
+//import java.util.ArrayList;
+//import java.util.Random;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+//import javafx.beans.value.ChangeListener;
+//import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
+//import javafx.geometry.Pos;
+//import javafx.scene.Node;
+//import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+//import javafx.scene.control.TextField;
+//import javafx.scene.control.TextInputControl;
+//import javafx.scene.input.KeyCode;
+//import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+//import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+//import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 
 public class gamehub extends Application {
 
-    String username = "blainos";
+    String username;
+    int wordleWins;
+    int wordleLosses;
+    String wordleAttempts;
+    int tictacWins;
+    int tictacLosses;
+    int tictacTies;
 
     double gameSquareSize = 150;
     double profRectWidth = 250;
@@ -60,10 +66,32 @@ public class gamehub extends Application {
     Background yellow = new Background(new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY));
     Background grey = new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY));
     Background lightgrey = new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY));
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    public gamehub() {
+        super();
+        username = "null";
+        wordleWins = 0;
+        wordleLosses = 0;
+        wordleAttempts = "";
+        tictacWins = 0;
+        tictacLosses = 0;
+        tictacTies = 0;
+    }
 	
-	public static void main(String[] args) throws IOException {
-		launch(args);
-	}
+	public gamehub(String uName, int wWins, int wLoss, String wAtmt, int tWins, int tLoss, int tTies) {
+        super();
+        username = uName;
+        wordleWins = wWins;
+        wordleLosses = wLoss;
+        wordleAttempts = wAtmt;
+        tictacWins = tWins;
+        tictacLosses = tLoss;
+        tictacTies = tTies;
+    }
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -178,10 +206,24 @@ public class gamehub extends Application {
                 /*
                  * Stats
                  */
-                int wordleWins = 0;
-                int wordleLosses = 0;
+                //int wordleWins = 0;
+                //int wordleLosses = 0;
                 double wordleAverage = 0.0;
-                int wordlePersonalBest = 0;
+                String[] strArray = wordleAttempts.split(",");
+                int[] wordleHistory = new int[strArray.length];
+                for(int i = 0; i < strArray.length; i++) {
+                    wordleHistory[i] = Integer.parseInt(strArray[i]);
+                }
+                int totalAttempts = 0;
+                int lowest = 6;
+                for (int i = 0; i < wordleHistory.length; i++) {
+                    totalAttempts = totalAttempts + wordleHistory[i];
+                    if (wordleHistory[i] < totalAttempts) {
+                        lowest = wordleHistory[i];
+                    }
+                }
+                wordleAverage = totalAttempts / wordleHistory.length;
+                int wordlePersonalBest = lowest;
 
                 String totalWins = "Total Wins: ";
                 String totalLosses = "Total Losses: ";

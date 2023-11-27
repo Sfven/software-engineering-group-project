@@ -29,6 +29,7 @@ public class Login extends Application {
 
     @Override
     public void start(Stage loginStage) {
+
         loginStage.setTitle("Login");
 
         GridPane grid = new GridPane();
@@ -73,7 +74,7 @@ public class Login extends Application {
 
             if (registerUser(username, password)) {
                 Stage gamehubStage = new Stage();
-                gamehub gamehub = new gamehub();
+                gamehub gamehub = new gamehub(uName, wWins, wLoss, wAtmt, tWins, tLoss, tTies);
                 try {
                     loginStage.close();
                     gamehub.start(gamehubStage);
