@@ -1,6 +1,8 @@
 # Gamer Central
 
 A launcher for various minigames like tic-tac-toe and Wordle.
+## Presentation
+https://www.canva.com/design/DAF1SUt49vc/PgEh5GtnmGD6bjalanSJ4g/edit?utm_content=DAF1SUt49vc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 Meeting Mondays/Wednesday/Saturdays at 4pm
 - Monday: Review
@@ -25,3 +27,4 @@ Multiple things must be preinstalled prior to running or compiling the program:
 - Run the program. Note that if the JDBC driver is setup incorrectly, you will get a `classNotFoundException`.
     - `java --module-path ./javafx-sdk-21.0.1/lib/ --add-modules javafx.controls,javafx.fxml Login.java`
     - Note that `Login.java` is the first thing to run and will call the other classes.
+ 
