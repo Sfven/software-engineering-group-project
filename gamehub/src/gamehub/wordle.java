@@ -6,6 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -54,12 +58,27 @@ public class wordle extends Application {
 	Font keyPress = new Font("Arial Black", 12);
 	boolean win = false;
 	boolean over = false;
+	int attempts = 0;
+
+	private String username;
+	private String password;
+
+
+	private static final String DB_URL = "jdbc:mysql://seprojectdb.sfven.xyz:10888/users";
+    private static final String DB_USER = "app";
+    private static final String DB_PASSWORD = "&*Mgw41#7evRnVym6CKmmc2jHoYG0*FX"; // this is a password. dont share it with bad people or they can jack with the database ¯\_(ツ)_/¯
 	
 	/* 
 	public static void main(String[] args) throws IOException {
 		launch(args);
 	}
 	*/
+
+	public wordle(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -69,8 +88,8 @@ public class wordle extends Application {
 		 */
 		ArrayList<String> wordleList = new ArrayList<>(); // List for Wordle Word of the Day
 		ArrayList<String> extendedList = new ArrayList<>(); // List for eligible words to be guessed
-		BufferedReader reader1 = new BufferedReader(new FileReader("../../english_words_10k_mit.txt"));
-		BufferedReader reader2 = new BufferedReader(new FileReader("../../english_words_alpha_dwyl.txt"));
+		BufferedReader reader1 = new BufferedReader(new FileReader("gamehub/english_words_10k_mit.txt"));
+		BufferedReader reader2 = new BufferedReader(new FileReader("gamehub/english_words_alpha_dwyl.txt"));
 		while (reader1.ready()) {
 			String word = reader1.readLine();
 			if (word.length() == 5) {
@@ -333,6 +352,7 @@ public class wordle extends Application {
 			        			}
 			        			// proceed if valid guess
 			        			else {
+									attempts++;
 			        				/*
 			        				 * Loop through and change to pertinent color (grey, yellow, green)
 			        				 * Add to pertinent letter lists (grey, yellow, green)
@@ -417,12 +437,12 @@ public class wordle extends Application {
 			        				if (guess.equals(WotD)) {
 			        					over = true;
 			        					win = true;
-			        					endGame(wordleGrid, textGrid, win, WotD);
+			        					endGame(wordleGrid, textGrid, win, WotD, attempts, username, password);
 			        				}
 			        				else if (((TextField) ((Pane) wordleGrid.getChildren().get(29)).getChildren().get(1)).isFocused()) {
 			        					over = true;
 			        					win = false;
-			        					endGame(wordleGrid, textGrid, win, WotD);
+			        					endGame(wordleGrid, textGrid, win, WotD, attempts, username, password);
 			        				}
 
 			        			}
@@ -513,7 +533,7 @@ public class wordle extends Application {
 	 * set all tiles as uneditable 
 	 * and change header to appropriate message.
 	 */
-	public static void endGame(GridPane wordleGrid, GridPane textGrid, boolean win, String WotD) {
+	public static void endGame(GridPane wordleGrid, GridPane textGrid, boolean win, String WotD, int attempts, String username, String password) {
 		for (Node box : wordleGrid.getChildren()) {
 			((TextField) ((Pane) box).getChildren().get(1)).setEditable(false);
 			((TextField) ((Pane) box).getChildren().get(1)).setFocusTraversable(false);
@@ -522,11 +542,53 @@ public class wordle extends Application {
 		if (win) {
 			System.out.println("You win!");
 			((Text) ((Pane) textGrid).getChildren().get(0)).setText("YOU WIN!");
+			try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    resultSet.next();
+					int wins = resultSet.getInt("wordle_wins");
+					wins++;
+                    resultSet.updateInt("wordle_wins", wins);
+					resultSet.updateRow();
+					String attemptString = resultSet.getString("wordle_attempt");
+					if (attemptString == null) attemptString = "";
+					attemptString.concat(attempts + ",");
+                    //return true;
+                }
+            }
+			} catch (Exception e) {
+				e.printStackTrace();
+				//return false;
+			}
 			
 		}
 		else {
 			System.out.println("You lose!");
 			((Text) ((Pane) textGrid).getChildren().get(0)).setText("YOU LOSE: " + WotD.toUpperCase());
+			try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    resultSet.next();
+					int losses = resultSet.getInt("wordle_losses");
+					losses++;
+                    resultSet.updateInt("wordle_losses", losses);
+					resultSet.updateRow();
+					String attemptString = resultSet.getString("wordle_attempt");
+					if (attemptString == null) attemptString = "";
+					attemptString.concat(attempts + ",");
+                    //return true;
+                }
+            }
+			} catch (Exception e) {
+				e.printStackTrace();
+				//return false;
+			}
 		}
 	}
 

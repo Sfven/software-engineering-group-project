@@ -11,6 +11,8 @@
         "c:\\Users\\bjone\\Downloads\\openjfx-21.0.1_windows-x64_bin-sdk\\javafx-sdk-21.0.1\\lib\\javafx.media.jar",
         "c:\\Users\\bjone\\Downloads\\openjfx-21.0.1_windows-x64_bin-sdk\\javafx-sdk-21.0.1\\lib\\javafx.swing.jar",
         "c:\\Users\\bjone\\Downloads\\openjfx-21.0.1_windows-x64_bin-sdk\\javafx-sdk-21.0.1\\lib\\javafx.web.jar",
-        "c:\\Users\\bjone\\Downloads\\openjfx-21.0.1_windows-x64_bin-sdk\\javafx-sdk-21.0.1\\lib\\javafx-swt.jar"
+        "c:\\Users\\bjone\\Downloads\\openjfx-21.0.1_windows-x64_bin-sdk\\javafx-sdk-21.0.1\\lib\\javafx-swt.jar",
+        "mysql-connector-j-8.2.0/mysql-connector-j-8.2.0.jar",
+        "c:\\Users\\bjone\\Downloads\\mysql-connector-j-8.2.0\\mysql-connector-j-8.2.0\\mysql-connector-j-8.2.0.jar"
     ]
 }

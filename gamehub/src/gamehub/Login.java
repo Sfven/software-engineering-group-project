@@ -55,7 +55,7 @@ public class Login extends Application {
 
             if (validateLogin(username, password)) {
                 Stage gamehubStage = new Stage();
-                gamehub gamehub = new gamehub(uName, wWins, wLoss, wAtmt, tWins, tLoss, tTies);
+                gamehub gamehub = new gamehub(uName, password, wWins, wLoss, wAtmt, tWins, tLoss, tTies);
                 try {
                     loginStage.close();
                     gamehub.start(gamehubStage);
@@ -74,7 +74,7 @@ public class Login extends Application {
 
             if (registerUser(username, password)) {
                 Stage gamehubStage = new Stage();
-                gamehub gamehub = new gamehub(uName, wWins, wLoss, wAtmt, tWins, tLoss, tTies);
+                gamehub gamehub = new gamehub(uName, password, wWins, wLoss, wAtmt, tWins, tLoss, tTies);
                 try {
                     loginStage.close();
                     gamehub.start(gamehubStage);

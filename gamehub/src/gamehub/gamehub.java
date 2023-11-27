@@ -41,13 +41,14 @@ import javafx.stage.Stage;
 
 public class gamehub extends Application {
 
-    String username;
-    int wordleWins;
-    int wordleLosses;
-    String wordleAttempts;
-    int tictacWins;
-    int tictacLosses;
-    int tictacTies;
+    private String username;
+    private String password;
+    private int wordleWins;
+    private int wordleLosses;
+    private String wordleAttempts;
+    private int tictacWins;
+    private int tictacLosses;
+    private int tictacTies;
 
     double gameSquareSize = 150;
     double profRectWidth = 250;
@@ -82,9 +83,10 @@ public class gamehub extends Application {
         tictacTies = 0;
     }
 	
-	public gamehub(String uName, int wWins, int wLoss, String wAtmt, int tWins, int tLoss, int tTies) {
+	public gamehub(String uName, String uPass, int wWins, int wLoss, String wAtmt, int tWins, int tLoss, int tTies) {
         super();
         username = uName;
+        password = uPass;
         wordleWins = wWins;
         wordleLosses = wLoss;
         wordleAttempts = wAtmt;
@@ -147,8 +149,8 @@ public class gamehub extends Application {
         profileUser.setFont(usernameFont);
 
         GridPane profileHeaderGrid = new GridPane();
-        profileHeaderGrid.add(profileCircle, 0, 0);
-        profileHeaderGrid.add(profileUser, 1, 0);
+        //profileHeaderGrid.add(profileCircle, 0, 0);
+        profileHeaderGrid.add(profileUser, 0, 0);
         profileHeaderGrid.setPadding(new Insets(10, 10, 10, 10));
         profileHeaderGrid.setHgap(10);
         profileHeaderGrid.setVgap(10);
@@ -181,9 +183,9 @@ public class gamehub extends Application {
                 EventHandler<MouseEvent> wordlePlayButtonClick = new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        System.out.println("Play button clicked");
+                        //System.out.println("Play button clicked");
                         Stage wordleStage = new Stage();
-                        wordle wordle = new wordle();
+                        wordle wordle = new wordle(username, password);
                         try {
                             stage.close();
                             wordle.start(wordleStage);
@@ -209,13 +211,14 @@ public class gamehub extends Application {
                 //int wordleWins = 0;
                 //int wordleLosses = 0;
                 double wordleAverage = 0.0;
-                String[] strArray = wordleAttempts.split(",");
-                int[] wordleHistory = new int[strArray.length];
+                int lowest = 6;
+                if (wordleAttempts != null) {
+                    String[] strArray = wordleAttempts.split(",");
+                    int[] wordleHistory = new int[strArray.length];
                 for(int i = 0; i < strArray.length; i++) {
                     wordleHistory[i] = Integer.parseInt(strArray[i]);
                 }
                 int totalAttempts = 0;
-                int lowest = 6;
                 for (int i = 0; i < wordleHistory.length; i++) {
                     totalAttempts = totalAttempts + wordleHistory[i];
                     if (wordleHistory[i] < totalAttempts) {
@@ -223,6 +226,7 @@ public class gamehub extends Application {
                     }
                 }
                 wordleAverage = totalAttempts / wordleHistory.length;
+                }
                 int wordlePersonalBest = lowest;
 
                 String totalWins = "Total Wins: ";
