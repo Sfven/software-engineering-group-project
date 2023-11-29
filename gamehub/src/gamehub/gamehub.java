@@ -5,8 +5,10 @@
 //import java.io.BufferedReader;
 //import java.io.FileNotFoundException;
 //import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 //import java.lang.reflect.Method;
@@ -345,7 +347,21 @@ public class gamehub extends Application {
 
                         String command = "python gamehub/tic_tac_toe.py";
                         try {
+                            String s;
                             Process p = Runtime.getRuntime().exec(command);
+                            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                            if((s=in.readLine()) != null){
+                                System.out.println(s);
+                                if (s.equals("Player \"X\" won!")) {
+                                    addTicTacWin();
+                                }
+                                if (s.equals("Player \"O\" won!")) {
+                                    addTicTacLoss();
+                                }
+                                if (s.equals("tie")) {
+                                    addTicTacTie();
+                                }
+                                }
                             p.waitFor();
                             p.destroy();
                             //stage.close();
@@ -454,6 +470,18 @@ public class gamehub extends Application {
         //System.out.println(attemptCount + "//");
         //System.out.println(wordleAttempts);
         updateStats();
+    }
+
+    public void addTicTacWin() {
+        tictacWins++;
+    }
+
+    public void addTicTacLoss() {
+        tictacLosses++;
+    }
+
+    public void addTicTacTie() {
+        tictacTies++;
     }
 
     public void updateStats() {

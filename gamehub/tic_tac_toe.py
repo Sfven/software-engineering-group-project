@@ -148,11 +148,13 @@ class TicTacToeBoard(tk.Tk):
             self._game.process_move(move) # process move
             if self._game.is_tied(): # check if game is tied
                 self._update_display(msg="Tied game!", color="red")
+                print("tie")
             elif self._game.has_winner(): # check if current player won
                 self._highlight_cells()
                 msg = f'Player "{self._game.current_player.label}" won!'
                 color = self._game.current_player.color
                 self._update_display(msg, color)
+                print(msg)
             else: # next turn
                 self._game.toggle_player()
                 msg = f"{self._game.current_player.label}'s turn"

@@ -71,10 +71,12 @@ public class Login extends Application {
         grid.add(registerButton, 1, 3);
 
         loginButton.setOnAction(e -> {
+            System.out.println("1");
             String username = usernameField.getText();
             String password = passwordField.getText();
 
             if (validateLogin(username, password)) {
+                System.out.println("2");
                 Stage gamehubStage = new Stage();
                 gamehub gamehub = new gamehub(uName, password, wWins, wLoss, wAtmt, tWins, tLoss, tTies);
                 try {
@@ -118,11 +120,14 @@ public class Login extends Application {
 
     private boolean validateLogin(String username, String password) {
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            System.out.println("3");
             String query = "SELECT * FROM users WHERE username = ? AND password = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                System.out.println("4");
                 preparedStatement.setString(1, username);
                 preparedStatement.setString(2, password);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    System.out.println("5");
                     resultSet.next();
                     uName = resultSet.getString("username");
                     wWins = resultSet.getInt("wordle_wins");
@@ -131,6 +136,7 @@ public class Login extends Application {
                     tWins = resultSet.getInt("tictactoe_wins");
                     tLoss = resultSet.getInt("tictactoe_losses");
                     tTies = resultSet.getInt("tictactoe_ties");
+                    System.out.println("6");
                     return true;
                 }
             }
