@@ -376,10 +376,10 @@ public class gamehub extends Application {
                 
                 
                 
-                int tictacTotalGames = tictacWins + tictacLosses + tictacTies;
+                double tictacTotalGames = tictacWins + tictacLosses + tictacTies;
                 double tictacAverage = 0.0;
                 if (tictacTotalGames != 0) {
-                    tictacAverage = (tictacWins) / (tictacTotalGames);
+                    tictacAverage = ((double)tictacWins) / (tictacTotalGames);
                 }
 
                 String totalWins = "Total Wins: ";
@@ -402,7 +402,7 @@ public class gamehub extends Application {
                 lossValue.setFont(statFont);
                 tieValue.setText(""+ tictacTies);
                 tieValue.setFont(statFont);
-                avgValue.setText(""+ tictacAverage);
+                avgValue.setText(String.format("%.2f", tictacAverage));
                 avgValue.setFont(statFont);
 
                 statGrid.add(winText, 0, 0);
