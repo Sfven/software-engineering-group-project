@@ -386,7 +386,7 @@ public class wordle extends Application {
 			        					else if (WotD.contains(guessCharStr)) { // YELLOW LETTERS
 			        						// FIXME: k in the line below needs to be replaced with the correct int // note: idk what the heck this was about
 			        						int n = start + k; // translates guessChar index in guess to index in wordleGrid
-			        						((Rectangle) ((Pane) wordleGrid.getChildren().get(n)).getChildren().get(0)).setFill(Color.YELLOW);
+			        						((Rectangle) ((Pane) wordleGrid.getChildren().get(n)).getChildren().get(0)).setFill(Color.GOLDENROD);
 			        						//((TextField) ((Pane) wordleGrid.getChildren().get(n)).getChildren().get(1)).setBackground(yellow);
 			        						if (!yellowLetters.contains(guessCharStr)) {
 			        							yellowLetters.add(guessCharStr);
@@ -423,7 +423,7 @@ public class wordle extends Application {
 				        			for (String letter : yellowLetters) {
 				        					
 		        							int letterPos = QWERTY_FULL.indexOf(letter.toUpperCase());
-		    				            	((Rectangle) ((Pane) keyboardGrid.getChildren().get(letterPos)).getChildren().get(0)).setFill(Color.YELLOW);
+		    				            	((Rectangle) ((Pane) keyboardGrid.getChildren().get(letterPos)).getChildren().get(0)).setFill(Color.GOLDENROD);
 		    				    			//((TextField) ((Pane) keyboardGrid.getChildren().get(letterPos)).getChildren().get(1)).setBackground(yellow);
 		        							
 				        			}

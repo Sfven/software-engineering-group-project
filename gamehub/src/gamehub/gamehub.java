@@ -255,12 +255,14 @@ public class gamehub extends Application {
                     wordleAttempts = null;
                 }
                 if (wordleAttempts != null) {
+                    System.out.println(wordleAttempts);
                     String[] strArray = wordleAttempts.split(",");
                     int[] wordleHistory = new int[strArray.length];
                     for(int i = 0; i < strArray.length; i++) {
                     wordleHistory[i] = Integer.parseInt(strArray[i]);
+                    System.out.print(wordleHistory[i] + ",");
                     }
-                    int totalAttempts = 0;
+                    double totalAttempts = 0;
                     for (int i = 0; i < wordleHistory.length; i++) {
                         totalAttempts = totalAttempts + wordleHistory[i];
                         if (wordleHistory[i] < lowest) {
@@ -268,12 +270,14 @@ public class gamehub extends Application {
                         }
                     }
                     wordleAverage = totalAttempts / (wordleWins+wordleLosses);
+                    System.out.println(wordleAverage + " = " + totalAttempts + " / (" + wordleWins + " + " + wordleLosses + ")");
                 }
                 int wordlePersonalBest = lowest;
+                String averageGuessValue = String.format("%.2f", wordleAverage);
 
                 String totalWins = "Total Wins: ";
                 String totalLosses = "Total Losses: ";
-                String averageGuesses = "Average Guesses: ";
+                String averageGuesses = "Guess Average: ";
                 String bestGuess = "Lowest Guess: ";
 
                 winText.setText(totalWins);
@@ -289,7 +293,7 @@ public class gamehub extends Application {
                 winValue.setFont(statFont);
                 lossValue.setText(""+ wordleLosses);
                 lossValue.setFont(statFont);
-                averageValue.setText(""+ wordleAverage);
+                averageValue.setText(""+ averageGuessValue);
                 averageValue.setFont(statFont);
                 bestValue.setText(""+ wordlePersonalBest);
                 bestValue.setFont(statFont);
