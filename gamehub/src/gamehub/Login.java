@@ -94,6 +94,7 @@ public class Login extends Application {
             String password = passwordField.getText();
 
             if (registerUser(username, password)) {
+                validateLogin(username, password);
                 Stage gamehubStage = new Stage();
                 gamehub gamehub = new gamehub(uName, password, wWins, wLoss, wAtmt, tWins, tLoss, tTies);
                 try {
