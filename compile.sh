@@ -1,4 +1,7 @@
 #!/bin/sh
+
+# Run this script to compile all parts of the program
+
 cd ./gamehub/src/gamehub/
 echo "Compiling Login.java"
 javac --module-path ../../../javafx-sdk-21.0.1/lib/ --add-modules javafx.controls,javafx.fxml Login.java
