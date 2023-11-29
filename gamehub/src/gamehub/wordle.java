@@ -64,6 +64,11 @@ public class wordle extends Application {
 	private String password;
 	gamehub hub;
 
+	Color darkModeSquare = Color.rgb(51, 51, 51);
+    Color darkModeBackground = Color.rgb(27, 27, 27);
+	Background bg = new Background(new BackgroundFill(darkModeBackground, CornerRadii.EMPTY, Insets.EMPTY));
+	Background txtbg = new Background(new BackgroundFill(darkModeSquare, CornerRadii.EMPTY, Insets.EMPTY));
+
 
 	private static final String DB_URL = "jdbc:mysql://seprojectdb.sfven.xyz:10888/users";
     private static final String DB_USER = "app";
@@ -123,6 +128,7 @@ public class wordle extends Application {
 		
 		GridPane textGrid = new GridPane();
 		Text header = new Text();
+		header.setFill(Color.WHITE);
 		header.setText("GUESS THE WORD");
 		header.setFont(new Font("Arial Bold Italic", 28));
 		header.setTextAlignment(TextAlignment.CENTER);
@@ -135,7 +141,6 @@ public class wordle extends Application {
 		
 		GridPane wordleGrid = new GridPane();
 		
-		Background bg = new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY));
 		Background clear = new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY));
 		Background green = new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY));
 		Background yellow = new Background(new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY));
@@ -143,7 +148,7 @@ public class wordle extends Application {
 		Background lightgrey = new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY));
 		for (int row = 0; row < 6; row++) {
 			for (int column = 0; column < 5; column++) {
-				Rectangle square = new Rectangle(sqSize, sqSize, Color.WHITE);
+				Rectangle square = new Rectangle(sqSize, sqSize, darkModeSquare);
 				square.setStrokeWidth(1);
 				square.setStroke(Color.BLACK);
 				TextField text = new TextField();
@@ -152,6 +157,7 @@ public class wordle extends Application {
 				text.setPadding(new Insets(10, 10, 10, 10));
 				text.setPrefSize(sqSize-20, sqSize-20);
 				text.setFont(guessType);
+				text.setStyle("-fx-text-fill: white;");
 				text.setEditable(false);
 				text.setMouseTransparent(true);
 				text.setFocusTraversable(true);
@@ -205,15 +211,16 @@ public class wordle extends Application {
 			}
 			for (int keyPlace = 0; keyPlace < KEYROW.length(); keyPlace++) {
 				String key = KEYROW.substring(keyPlace, keyPlace+1);
-				Rectangle keyRect = new Rectangle(keyHeight, keyWidth, Color.WHITE);
+				Rectangle keyRect = new Rectangle(keyHeight, keyWidth, darkModeSquare);
 				keyRect.setStrokeWidth(1);
-				keyRect.setStroke(Color.WHITE);
+				keyRect.setStroke(darkModeSquare);
 				TextField keyF = new TextField();
 				keyF.setPrefColumnCount(1);
 				keyF.setBackground(clear);
 				keyF.setPadding(new Insets(1, 1, 1, 1));
 				keyF.setPrefSize(keyHeight, keyWidth);
 				keyF.setFont(keyType);
+				keyF.setStyle("-fx-text-fill: white;");
 				keyF.setText(key);
 				keyF.setEditable(false);
 				keyF.setMouseTransparent(true);
@@ -313,7 +320,7 @@ public class wordle extends Application {
 				            if (QWERTY_FULL.contains(keyVal)) {
 				            	keyPos = QWERTY_FULL.indexOf(keyVal);
 				            	//((TextField) ((Pane) keyboardGrid.getChildren().get(keyPos)).getChildren().get(1)).setFont(keyPress);
-				            	((Rectangle) ((Pane) keyboardGrid.getChildren().get(keyPos)).getChildren().get(0)).setStroke(Color.BLACK);
+				            	((Rectangle) ((Pane) keyboardGrid.getChildren().get(keyPos)).getChildren().get(0)).setStroke(Color.WHITE);
 				            	//text.setText(keyVal);
 				            	//nextText.requestFocus();
 				            }
@@ -485,7 +492,7 @@ public class wordle extends Application {
 				            	keyPos = QWERTY_FULL.indexOf(keyVal);
 				            	//((Rectangle) ((Pane) keyboardGrid.getChildren().get(keyPos)).getChildren().get(0)).setStrokeWidth(1);
 				            	//((TextField) ((Pane) keyboardGrid.getChildren().get(keyPos)).getChildren().get(1)).setFont(keyType);
-				            	((Rectangle) ((Pane) keyboardGrid.getChildren().get(keyPos)).getChildren().get(0)).setStroke(Color.WHITE);
+				            	((Rectangle) ((Pane) keyboardGrid.getChildren().get(keyPos)).getChildren().get(0)).setStroke(darkModeSquare);
 					    	}
 					    }
 					});
@@ -520,7 +527,10 @@ public class wordle extends Application {
 		grid.add(textGrid, 0, 0);
 		grid.add(wordleGrid, 0, 1);
 		grid.add(keyboardGrid,  0, 2);
+		grid.setBackground(bg);
 		Scene scene = new Scene(grid);
+		scene.setFill(darkModeBackground);
+
 		
 		
 		

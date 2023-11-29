@@ -2,7 +2,11 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,6 +26,9 @@ public class Login extends Application {
     private int tWins;
     private int tLoss;
     private int tTies;
+    Color darkModeSquare = Color.rgb(51, 51, 51);
+    Color darkModeBackground = Color.rgb(27, 27, 27);
+    Color textColor = Color.WHITE;
 
     public static void main(String[] args) {
         launch(args);
@@ -36,15 +43,29 @@ public class Login extends Application {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 20, 20, 20));
+        grid.setBackground(new Background(new BackgroundFill(darkModeBackground, CornerRadii.EMPTY, Insets.EMPTY)));
 
         TextField usernameField = new TextField();
+        usernameField.setBackground(new Background(new BackgroundFill(darkModeSquare, CornerRadii.EMPTY, Insets.EMPTY)));
+        usernameField.setStyle("-fx-text-fill: white;");
         PasswordField passwordField = new PasswordField();
+        passwordField.setBackground(new Background(new BackgroundFill(darkModeSquare, CornerRadii.EMPTY, Insets.EMPTY)));
+        passwordField.setStyle("-fx-text-fill: white;");
         Button loginButton = new Button("Login");
+        loginButton.setBackground(new Background(new BackgroundFill(darkModeSquare, CornerRadii.EMPTY, Insets.EMPTY)));
+        loginButton.setTextFill(textColor);
         Button registerButton = new Button("Register");
+        registerButton.setBackground(new Background(new BackgroundFill(darkModeSquare, CornerRadii.EMPTY, Insets.EMPTY)));
+        registerButton.setTextFill(textColor);
 
-        grid.add(new Label("Username:"), 0, 0);
+        Label userLabel = new Label("Username:");
+        userLabel.setTextFill(textColor);
+        Label passwordLabel = new Label("Password:");
+        passwordLabel.setTextFill(textColor);
+
+        grid.add(userLabel, 0, 0);
         grid.add(usernameField, 1, 0);
-        grid.add(new Label("Password:"), 0, 1);
+        grid.add(passwordLabel, 0, 1);
         grid.add(passwordField, 1, 1);
         grid.add(loginButton, 1, 2);
         grid.add(registerButton, 1, 3);
@@ -88,6 +109,8 @@ public class Login extends Application {
         });
 
         Scene scene = new Scene(grid, 300, 200);
+        scene.setFill(darkModeBackground);
+        //System.out.println(scene.getFill().toString());
         loginStage.setScene(scene);
         loginStage.show();
     }

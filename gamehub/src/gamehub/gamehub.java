@@ -5,6 +5,7 @@
 //import java.io.BufferedReader;
 //import java.io.FileNotFoundException;
 //import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,9 +20,11 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 //import javafx.geometry.Pos;
-//import javafx.scene.Node;
+import javafx.scene.Node;
 //import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 //import javafx.scene.control.TextField;
 //import javafx.scene.control.TextInputControl;
 //import javafx.scene.input.KeyCode;
@@ -65,7 +68,7 @@ public class gamehub extends Application {
     double playButtonHeight = 25;
     double profPicSize = 25;
     Font gameSquareFont = new Font("Arial Bold", 24);
-    Font usernameFont = new Font("Arial Bold", 16);
+    Font usernameFont = new Font("Arial Bold", 24);
     Font playButtonFont = new Font("Arial Bold Italic", 16);
     Font statFont = new Font("Arial Italic", 12);
 
@@ -75,6 +78,8 @@ public class gamehub extends Application {
     Background yellow = new Background(new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY));
     Background grey = new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY));
     Background lightgrey = new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY));
+    Color darkModeSquare = Color.rgb(51, 51, 51);
+    Color darkModeBackground = Color.rgb(27, 27, 27);
 
     public static void main(String[] args) {
         launch(args);
@@ -120,12 +125,20 @@ public class gamehub extends Application {
 		profileGrid.setVgap(10);
         
         GridPane grid = new GridPane();
+        grid.setBackground(new Background(new BackgroundFill(darkModeBackground, CornerRadii.EMPTY, Insets.EMPTY)));
 		grid.add(gameGrid, 1, 0);
 		grid.add(profileGrid, 0, 0);
 		Scene scene = new Scene(grid);
 
-        Rectangle wordleSquare = new Rectangle(gameSquareSize, gameSquareSize, Color.GREY);
-        Rectangle tictacSquare = new Rectangle(gameSquareSize, gameSquareSize, Color.GREY);
+        Rectangle wordleSquare = new Rectangle(gameSquareSize, gameSquareSize, darkModeSquare);
+        Rectangle tictacSquare = new Rectangle(gameSquareSize, gameSquareSize, darkModeSquare);
+
+        ImageView wordleImage = new ImageView(new Image(new FileInputStream("gamehub/images/wordle_icon.png")));
+        wordleImage.setFitWidth(gameSquareSize);
+        wordleImage.setPreserveRatio(true);
+        ImageView tictacImage = new ImageView(new Image(new FileInputStream("gamehub/images/tictactoe_icon.png")));
+        tictacImage.setFitWidth(gameSquareSize);
+        tictacImage.setPreserveRatio(true);
 
         Text wordleText = new Text("WORDLE");
 		wordleText.setFont(gameSquareFont);
@@ -134,28 +147,29 @@ public class gamehub extends Application {
         tictacText.setFont(gameSquareFont);
 
         StackPane wordleStack = new StackPane();
-        wordleStack.getChildren().addAll(wordleSquare, wordleText);
+        wordleStack.getChildren().addAll(wordleSquare, wordleImage);
 
         StackPane tictacStack = new StackPane();
-        tictacStack.getChildren().addAll(tictacSquare, tictacText);
+        tictacStack.getChildren().addAll(tictacSquare, tictacImage);
 
         gameGrid.add(tictacStack, 0, 0);
         gameGrid.add(wordleStack, 1, 0);
 
-        for (int row = 0; row < 4; row++) {
+        for (int row = 0; row < 3; row++) {
             int j = 0;
             if (row == 0) {
                 j = 2;
             }
             for (int col = j; col < 3; col++) {
-                gameGrid.add(new Rectangle(gameSquareSize, gameSquareSize, Color.LIGHTGREY), col, row);
+                gameGrid.add(new Rectangle(gameSquareSize, gameSquareSize, darkModeSquare), col, row);
             }
         }
 
 
-        Rectangle profileRectangle = new Rectangle(profRectWidth, profRectHeight, Color.GREY);
-        Circle profileCircle = new Circle(profPicSize, Color.BLACK);
-        Text profileUser = new Text(username);
+        Rectangle profileRectangle = new Rectangle(profRectWidth, profRectHeight, darkModeSquare);
+        Circle profileCircle = new Circle(profPicSize, Color.WHITE);
+        Text profileUser = new Text("welcome, \n" + username);
+        profileUser.setFill(Color.WHITE);
         profileUser.setFont(usernameFont);
 
         GridPane profileHeaderGrid = new GridPane();
@@ -179,6 +193,10 @@ public class gamehub extends Application {
         Text averageValue = new Text();
         Text bestText = new Text();
         Text bestValue = new Text();
+        Text tieText = new Text();
+        Text avgText = new Text();
+        Text tieValue = new Text();
+        Text avgValue = new Text();
 
         EventHandler<MouseEvent> wordleClick = new EventHandler<MouseEvent>() {
             @Override
@@ -193,9 +211,9 @@ public class gamehub extends Application {
                 wordlePane.setHgap(10);
                 wordlePane.setVgap(10);
 
-                Rectangle playRectangle = new Rectangle(playButtonWidth, playButtonHeight, Color.CYAN);
+                Rectangle playRectangle = new Rectangle(playButtonWidth, playButtonHeight, Color.DARKSLATEBLUE);
                 Text playText = new Text("PLAY");
-                playText.setFill(Color.WHITE);
+                playText.setFill(darkModeBackground);
                 playText.setFont(playButtonFont);
 
                 StackPane playButtonStack = new StackPane();
@@ -285,6 +303,11 @@ public class gamehub extends Application {
                 statGrid.add(bestText, 0, 3);
                 statGrid.add(bestValue, 1, 3);
 
+                for (Node node : statGrid.getChildren()) {
+                    Text text = (Text) node;
+                    text.setFill(Color.WHITE);
+                }
+
                 wordlePane.add(statGrid, 0, 1);
                 profileGrid.add(wordlePane, 0, 1);
 
@@ -303,9 +326,9 @@ public class gamehub extends Application {
                 tictacPane.setHgap(10);
                 tictacPane.setVgap(10);
 
-                Rectangle playRectangle = new Rectangle(playButtonWidth, playButtonHeight, Color.CYAN);
+                Rectangle playRectangle = new Rectangle(playButtonWidth, playButtonHeight, Color.DARKSLATEBLUE);
                 Text playText = new Text("PLAY");
-                playText.setFill(Color.WHITE);
+                playText.setFill(darkModeBackground);
                 playText.setFont(playButtonFont);
 
                 StackPane playButtonStack = new StackPane();
@@ -316,7 +339,7 @@ public class gamehub extends Application {
                     public void handle(MouseEvent event) {
                         System.out.println("Play button clicked");
 
-                        String command = "python ../../tic_tac_toe.py";
+                        String command = "python gamehub/tic_tac_toe.py";
                         try {
                             Process p = Runtime.getRuntime().exec(command);
                             p.waitFor();
@@ -346,32 +369,36 @@ public class gamehub extends Application {
                 /*
                  * Stats
                  */
-                int tictacWins = 0;
-                int tictacLosses = 0;
-                int tictacTies = 0;
+                
+                
+                
+                int tictacTotalGames = tictacWins + tictacLosses + tictacTies;
                 double tictacAverage = 0.0;
+                if (tictacTotalGames != 0) {
+                    tictacAverage = (tictacWins) / (tictacTotalGames);
+                }
 
                 String totalWins = "Total Wins: ";
                 String totalLosses = "Total Losses: ";
                 String totalTies = "Total Ties: ";
                 String winAverage = "Win Average: ";
 
-                Text winText = new Text(totalWins);
+                winText.setText(totalWins);
                 winText.setFont(statFont);
-                Text lossText = new Text(totalLosses);
+                lossText.setText(totalLosses);
                 lossText.setFont(statFont);
-                Text tieText = new Text(totalTies);
+                tieText.setText(totalTies);
                 tieText.setFont(statFont);
-                Text avgText = new Text(winAverage);
+                avgText.setText(winAverage);
                 avgText.setFont(statFont);
 
-                Text winValue = new Text(""+ tictacWins);
+                winValue.setText(""+ tictacWins);
                 winValue.setFont(statFont);
-                Text lossValue = new Text(""+ tictacLosses);
+                lossValue.setText(""+ tictacLosses);
                 lossValue.setFont(statFont);
-                Text tieValue = new Text(""+ tictacTies);
+                tieValue.setText(""+ tictacTies);
                 tieValue.setFont(statFont);
-                Text avgValue = new Text(""+ tictacAverage);
+                avgValue.setText(""+ tictacAverage);
                 avgValue.setFont(statFont);
 
                 statGrid.add(winText, 0, 0);
@@ -383,6 +410,11 @@ public class gamehub extends Application {
                 statGrid.add(avgText, 0, 3);
                 statGrid.add(avgValue, 1, 3);
 
+                for (Node node : statGrid.getChildren()) {
+                    Text text = (Text) node;
+                    text.setFill(Color.WHITE);
+                }
+
                 tictacPane.add(statGrid, 0, 1);
                 profileGrid.add(tictacPane, 0, 1);
 
@@ -393,7 +425,7 @@ public class gamehub extends Application {
         
 		
 		
-		
+		scene.setFill(darkModeBackground);
 		stage.setMaximized(false);
 		stage.setScene(scene);
 		stage.setTitle("GameHub");
