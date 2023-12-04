@@ -26,6 +26,9 @@ public class Login extends Application {
     private int tWins;
     private int tLoss;
     private int tTies;
+    private int cWins;
+    private int cLoss;
+    private int cDraws;
     Color darkModeSquare = Color.rgb(51, 51, 51);
     Color darkModeBackground = Color.rgb(27, 27, 27);
     Color textColor = Color.WHITE;
@@ -78,7 +81,7 @@ public class Login extends Application {
             if (validateLogin(username, password)) {
                 System.out.println("2");
                 Stage gamehubStage = new Stage();
-                gamehub gamehub = new gamehub(uName, password, wWins, wLoss, wAtmt, tWins, tLoss, tTies);
+                gamehub gamehub = new gamehub(uName, password, wWins, wLoss, wAtmt, tWins, tLoss, tTies, cWins, cLoss, cDraws);
                 try {
                     loginStage.close();
                     gamehub.start(gamehubStage);
@@ -136,6 +139,9 @@ public class Login extends Application {
                     tWins = resultSet.getInt("tictactoe_wins");
                     tLoss = resultSet.getInt("tictactoe_losses");
                     tTies = resultSet.getInt("tictactoe_ties");
+                    cWins = resultSet.getInt("chess_wins");
+                    cLoss = resultSet.getInt("chess_losses"); 
+                    cDraws = resultSet.getInt("chess_draws");
                     System.out.println("6");
                     return true;
                 }
@@ -170,7 +176,7 @@ public class Login extends Application {
                 showAlert("Invalid username/password", "Username/password cannot exceed 65 characters.");
                 return false;
             }
-            String query = "INSERT INTO users (username, password, wordle_wins, wordle_losses, wordle_attempt, tictactoe_wins, tictactoe_losses, tictactoe_ties) VALUES (?, ?, 0, 0, NULL, 0, 0, 0)";
+            String query = "INSERT INTO users (username, password, wordle_wins, wordle_losses, wordle_attempt, tictactoe_wins, tictactoe_losses, tictactoe_ties, chess_wins, chess_losses, chess_draws) VALUES (?, ?, 0, 0, NULL, 0, 0, 0, 0, 0, 0)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, username);
                 preparedStatement.setString(2, password);

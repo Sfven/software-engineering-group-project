@@ -61,6 +61,9 @@ public class gamehub extends Application {
     private int tictacWins = 0;
     private int tictacLosses;
     private int tictacTies;
+    private int chessWins;
+    private int chessLosses;
+    private int chessDraws;
     gamehub hub;
 
     double gameSquareSize = 150;
@@ -109,6 +112,25 @@ public class gamehub extends Application {
         tictacWins = tWins;
         tictacLosses = tLoss;
         tictacTies = tTies;
+        chessWins = 0;
+        chessLosses = 0;
+        chessDraws = 0;
+        hub = this;
+    }
+
+    public gamehub(String uName, String uPass, int wWins, int wLoss, String wAtmt, int tWins, int tLoss, int tTies, int cWins, int cLoss, int cDraws) {
+        super();
+        username = uName;
+        password = uPass;
+        wordleWins = wWins;
+        wordleLosses = wLoss;
+        wordleAttempts = wAtmt;
+        tictacWins = tWins;
+        tictacLosses = tLoss;
+        tictacTies = tTies;
+        chessWins = cWins;
+        chessLosses = cLoss;
+        chessDraws = cDraws;
         hub = this;
     }
 
@@ -134,6 +156,7 @@ public class gamehub extends Application {
 
         Rectangle wordleSquare = new Rectangle(gameSquareSize, gameSquareSize, darkModeSquare);
         Rectangle tictacSquare = new Rectangle(gameSquareSize, gameSquareSize, darkModeSquare);
+        Rectangle chessSquare = new Rectangle(gameSquareSize, gameSquareSize, darkModeSquare);
 
         ImageView wordleImage = new ImageView(new Image(new FileInputStream("gamehub/images/wordle_icon.png")));
         wordleImage.setFitWidth(gameSquareSize);
@@ -141,6 +164,9 @@ public class gamehub extends Application {
         ImageView tictacImage = new ImageView(new Image(new FileInputStream("gamehub/images/tictactoe_icon.png")));
         tictacImage.setFitWidth(gameSquareSize);
         tictacImage.setPreserveRatio(true);
+        ImageView chessImage = new ImageView(new Image(new FileInputStream("gamehub/images/chess_icon.png")));
+        chessImage.setFitWidth(gameSquareSize);
+        chessImage.setPreserveRatio(true);
 
         Text wordleText = new Text("WORDLE");
 		wordleText.setFont(gameSquareFont);
@@ -154,14 +180,16 @@ public class gamehub extends Application {
         StackPane tictacStack = new StackPane();
         tictacStack.getChildren().addAll(tictacSquare, tictacImage);
 
+        StackPane chessStack = new StackPane();
+        chessStack.getChildren().addAll(chessSquare, chessImage);
+
+
         gameGrid.add(tictacStack, 0, 0);
         gameGrid.add(wordleStack, 1, 0);
+        gameGrid.add(chessStack, 2,0);
 
-        for (int row = 0; row < 3; row++) {
+        for (int row = 1; row < 3; row++) {
             int j = 0;
-            if (row == 0) {
-                j = 2;
-            }
             for (int col = j; col < 3; col++) {
                 gameGrid.add(new Rectangle(gameSquareSize, gameSquareSize, darkModeSquare), col, row);
             }
@@ -186,6 +214,7 @@ public class gamehub extends Application {
 
         GridPane wordlePane = new GridPane();
         GridPane tictacPane = new GridPane();
+        GridPane chessPane = new GridPane();
 
         Text winText = new Text();
         Text winValue = new Text();
@@ -206,7 +235,9 @@ public class gamehub extends Application {
 
                 profileGrid.getChildren().remove(tictacPane);
                 profileGrid.getChildren().remove(wordlePane);
+                profileGrid.getChildren().remove(chessPane);
                 tictacPane.getChildren().removeAll();
+                chessPane.getChildren().removeAll();
                 wordlePane.getChildren().removeAll(winText, winValue, lossText, lossValue, averageText, averageValue, bestText, bestValue);
 
                 wordlePane.setPadding(new Insets(10, 10, 10, 10));
@@ -442,6 +473,110 @@ public class gamehub extends Application {
         };
         tictacStack.setOnMouseClicked(tictacClick);
 
+        EventHandler<MouseEvent> chessClick = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+                profileGrid.getChildren().remove(wordlePane);
+                profileGrid.getChildren().remove(tictacPane);
+                profileGrid.getChildren().remove(chessPane);
+                tictacPane.getChildren().removeAll();
+                wordlePane.getChildren().removeAll();
+                chessPane.getChildren().removeAll(winText, winValue, lossText, lossValue, tieText, tieValue, avgText, avgValue);
+
+                chessPane.setPadding(new Insets(10, 10, 10, 10));
+                chessPane.setHgap(10);
+                chessPane.setVgap(10);
+
+                Rectangle playRectangle = new Rectangle(playButtonWidth, playButtonHeight, Color.DARKSLATEBLUE);
+                Text playText = new Text("PLAY");
+                playText.setFill(darkModeBackground);
+                playText.setFont(playButtonFont);
+
+                StackPane playButtonStack = new StackPane();
+                playButtonStack.getChildren().addAll(playRectangle, playText);
+
+                EventHandler<MouseEvent> chessPlayButtonClick = new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        Stage chessStage = new Stage();
+                        Chess chess = new Chess(hub);
+                        try {
+                            //stage.close();
+                            chess.start(chessStage);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                };
+
+                playButtonStack.setOnMouseClicked(chessPlayButtonClick);
+
+                chessPane.add(playButtonStack, 0, 0);
+
+                GridPane statGrid = new GridPane();
+                statGrid.setPadding(new Insets(10, 10, 10, 10));
+                statGrid.setHgap(10);
+                statGrid.setVgap(10);
+
+                /*
+                 * Stats
+                 */
+                
+                
+                
+                double chessTotalGames = chessWins + chessLosses + chessDraws;
+                double chessAverage = 0.0;
+                if (chessTotalGames != 0) {
+                    chessAverage = ((double)chessWins) / (chessTotalGames);
+                }
+
+                String totalWins = "Total Wins: ";
+                String totalLosses = "Total Losses: ";
+                String totalTies = "Total Draws: ";
+                String winAverage = "Win Average: ";
+
+                winText.setText(totalWins);
+                winText.setFont(statFont);
+                lossText.setText(totalLosses);
+                lossText.setFont(statFont);
+                tieText.setText(totalTies);
+                tieText.setFont(statFont);
+                avgText.setText(winAverage);
+                avgText.setFont(statFont);
+
+                winValue.setText(""+ chessWins);
+                winValue.setFont(statFont);
+                lossValue.setText(""+ chessLosses);
+                lossValue.setFont(statFont);
+                tieValue.setText(""+ chessDraws);
+                tieValue.setFont(statFont);
+                avgValue.setText(String.format("%.2f", chessAverage));
+                avgValue.setFont(statFont);
+
+                statGrid.add(winText, 0, 0);
+                statGrid.add(winValue, 1, 0);
+                statGrid.add(lossText, 0, 1);
+                statGrid.add(lossValue, 1, 1);
+                statGrid.add(tieText, 0, 2);
+                statGrid.add(tieValue, 1, 2);
+                statGrid.add(avgText, 0, 3);
+                statGrid.add(avgValue, 1, 3);
+
+                for (Node node : statGrid.getChildren()) {
+                    Text text = (Text) node;
+                    text.setFill(Color.WHITE);
+                }
+
+                chessPane.add(statGrid, 0, 1);
+                profileGrid.add(chessPane, 0, 1);
+
+            }
+        };
+        chessStack.setOnMouseClicked(chessClick);
+
         
 		
 		
@@ -484,8 +619,20 @@ public class gamehub extends Application {
         tictacTies++;
     }
 
+    public void addChessWin() {
+        chessWins++;
+    }
+
+    public void addChessLoss() {
+        chessLosses++;
+    }
+
+    public void addChessDraw() {
+        chessDraws++;
+    }
+
     public void updateStats() {
-        String query = "UPDATE users SET username=?,password=?,wordle_wins=?,wordle_losses=?,wordle_attempt=?,tictactoe_wins=?,tictactoe_losses=?,tictactoe_ties=? WHERE username = ?";
+        String query = "UPDATE users SET username=?,password=?,wordle_wins=?,wordle_losses=?,wordle_attempt=?,tictactoe_wins=?,tictactoe_losses=?,tictactoe_ties=?,chess_wins=?,chess_losses=?,chess_draws=? WHERE username = ?";
         Connection connection;
         try {
         connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
@@ -499,6 +646,9 @@ public class gamehub extends Application {
                 preparedStatement.setInt(6, tictacWins);
                 preparedStatement.setInt(7, tictacLosses);
                 preparedStatement.setInt(8, tictacTies);
+                preparedStatement.setInt(10, chessWins);
+                preparedStatement.setInt(11, chessLosses);
+                preparedStatement.setInt(12, chessDraws);
                 //...etc
                 preparedStatement.executeUpdate();
                 //return true;
