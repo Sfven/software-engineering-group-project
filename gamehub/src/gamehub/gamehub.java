@@ -642,7 +642,7 @@ public class gamehub extends Application {
         connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, username);
-                preparedStatement.setString(9, username);
+                preparedStatement.setString(12, username);
                 preparedStatement.setString(2, password);
                 preparedStatement.setInt(3, wordleWins);
                 preparedStatement.setInt(4, wordleLosses);
@@ -650,9 +650,9 @@ public class gamehub extends Application {
                 preparedStatement.setInt(6, tictacWins);
                 preparedStatement.setInt(7, tictacLosses);
                 preparedStatement.setInt(8, tictacTies);
-                preparedStatement.setInt(10, chessWins);
-                preparedStatement.setInt(11, chessLosses);
-                preparedStatement.setInt(12, chessDraws);
+                preparedStatement.setInt(9, chessWins);
+                preparedStatement.setInt(10, chessLosses);
+                preparedStatement.setInt(11, chessDraws);
                 //...etc
                 preparedStatement.executeUpdate();
                 //return true;
