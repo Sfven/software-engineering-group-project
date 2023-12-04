@@ -758,10 +758,12 @@ public class Piece extends ImageView {
                                 if (team == Color.WHITE) {
                                     board.setResult("0-1");
                                     board.getHub().addChessLoss();
+                                    board.getHub().updateStats();
                                 }
                                 if (team == Color.BLACK) {
                                     board.setResult("1-0");
                                     board.getHub().addChessWin();
+                                    board.getHub().updateStats();
                                 }
                                 //System.out.println("Checkmate!");
                             }
@@ -769,6 +771,7 @@ public class Piece extends ImageView {
                                 //System.out.println("1/2-1/2");
                                 board.setResult("1/2-1/2");
                                 board.getHub().addChessDraw();
+                                board.getHub().updateStats();
                             }
 
                         }
