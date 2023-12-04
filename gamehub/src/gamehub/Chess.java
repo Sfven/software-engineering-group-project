@@ -63,6 +63,7 @@ public class Chess extends Application {
     private Text gameText;
     private TextField whitePlayer;
     private TextField blackPlayer;
+    private String username;
     private Text noteText;
 
     Color dark = Color.rgb(51, 51, 51);
@@ -77,11 +78,13 @@ public class Chess extends Application {
     public Chess() {
         super();
         hub = null;
+        username = "test";
     }
 
     public Chess(gamehub hub) {
         super();
         this.hub = hub;
+        username = hub.getUsername();
     }
 	
 
@@ -229,6 +232,13 @@ public class Chess extends Application {
         Label whitePlayerLabel = new Label(" White: ");
         whitePlayerLabel.setFont(consolas);
         whitePlayerLabel.setTextFill(Color.WHITE);
+
+        if (username != null) {
+            whitePlayer.setText(username);
+            whitePlayer.setEditable(false);
+            whitePlayer.setFocusTraversable(false);
+        }
+
         blackPlayer = new TextField();
         blackPlayer.setFont(consolas);
         blackPlayer.setStyle("-fx-text-fill: white;");

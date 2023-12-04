@@ -631,6 +631,10 @@ public class gamehub extends Application {
         chessDraws++;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void updateStats() {
         String query = "UPDATE users SET username=?,password=?,wordle_wins=?,wordle_losses=?,wordle_attempt=?,tictactoe_wins=?,tictactoe_losses=?,tictactoe_ties=?,chess_wins=?,chess_losses=?,chess_draws=? WHERE username = ?";
         Connection connection;

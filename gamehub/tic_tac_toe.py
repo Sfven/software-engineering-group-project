@@ -108,12 +108,13 @@ class TicTacToeBoard(tk.Tk):
         self.display = tk.Label(
             master=display_frame,
             text="Ready?",
+            #bg="black",
             font=font.Font(size=28, weight="bold"),
         )
         self.display.pack()
     
     def _create_board_grid(self):
-        grid_frame = tk.Frame(master=self)
+        grid_frame = tk.Frame(master=self, bg="black")
         grid_frame.pack()
         for row in range(self._game.board_size):
             self.rowconfigure(row, weight=1, minsize=50)
@@ -123,7 +124,8 @@ class TicTacToeBoard(tk.Tk):
                     master=grid_frame,
                     text="",
                     font=font.Font(size=36, weight="bold"),
-                    fg="black",
+                    fg="grey",
+                    bg="black",
                     width=3,
                     height=1,
                     highlightbackground="lightblue",
